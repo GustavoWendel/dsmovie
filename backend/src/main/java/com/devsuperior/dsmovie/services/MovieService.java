@@ -17,9 +17,15 @@ public class MovieService {
     @Autowired
     private MovieRepository movieRepository;
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Page<MovieDTO> findAll(Pageable pageable) {
         Page<Movie> result = movieRepository.findAll(pageable);
         return result.map(MovieDTO::new);
+    }
+
+    @Transactional(readOnly = true)
+    public MovieDTO findById(Long id) {
+        Movie result = movieRepository.findById(id).get();
+        return new MovieDTO(result);
     }
 }
